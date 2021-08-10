@@ -30,3 +30,36 @@ a {
   display: inline-block;
   text-decoration: none;
 }
+
+.hide {
+  display: none;
+
+  &-mobile {
+    @include md.breakpointDown(medium) {
+      display: none;
+    }
+  }
+
+  &-desktop {
+    @include md.breakpoint(medium) {
+      display: none;
+    }
+  }
+}
+
+.btn-primary {
+  width: 100%;
+  font-family: var.$fontNotoSans;
+  padding: 0.5625rem 0;
+  background: var.$blue;
+  border: 0;
+  font-weight: 500;
+  color: var.$white;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 100ms ease-in-out;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

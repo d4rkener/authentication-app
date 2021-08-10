@@ -10,6 +10,15 @@ const routes = [
       title: "Authentication App | Personal Info",
     },
   },
+  {
+    path: "/signup",
+    name: "Signup",
+    component: () =>
+      import(/* webpackChunkName: "signup" */ "../views/Signup.vue"),
+    meta: {
+      title: "Authentication App | Signup",
+    },
+  },
 ];
 
 const router = createRouter({
