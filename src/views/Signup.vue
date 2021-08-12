@@ -19,25 +19,33 @@
           choose
         </p>
       </div>
-      <form class="signup__form">
+      <div class="signup__message" v-if="isError">
+        <fa :icon="['fas', 'exclamation-circle']" /> {{ message }}
+      </div>
+      <form class="signup__form" @submit.prevent="handleSubmit">
         <div class="email">
           <fa :icon="['fas', 'envelope']" />
-          <input type="email" autocomplete="off" placeholder="Email" />
+          <input
+            type="email"
+            v-model="email"
+            autocomplete="off"
+            placeholder="Email"
+          />
         </div>
         <div class="password">
           <fa :icon="['fas', 'lock']" />
-          <input type="password" autocomplete="off" placeholder="Password" />
+          <input
+            type="password"
+            v-model="password"
+            autocomplete="off"
+            placeholder="Password"
+          />
         </div>
         <button type="submit" class="btn-primary">Start Coding Now</button>
       </form>
       <div class="signup__others">
         <p>or continue with these social profile</p>
-        <div class="socials">
-          <button><fa :icon="['fab', 'google']" /></button>
-          <button><fa :icon="['fab', 'facebook']" /></button>
-          <button><fa :icon="['fab', 'twitter']" /></button>
-          <button><fa :icon="['fab', 'github']" /></button>
-        </div>
+        <Socials />
         <p>Adready a member? <router-link to="#">Login</router-link></p>
       </div>
     </div>
@@ -45,8 +53,47 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { supabase } from '@/supabase/config.js'
+import Socials from '@/components/Socials'
+
 export default {
   name: 'Signup',
+  components: { Socials },
+  setup() {
+    const email = ref('')
+    const password = ref('')
+    const isError = ref(false)
+    const message = ref('')
+    const router = useRouter()
+
+    // Signing up users with email
+    const handleSubmit = async () => {
+      try {
+        const { user, error } = await supabase.auth.signUp({
+          email: email.value.trim(),
+          password: password.value.trim(),
+        })
+
+        if (!error && user.aud === 'authenticated') {
+          isError.value = false
+          message.value = ''
+          email.value = ''
+          password.value = ''
+          router.push({ name: 'Home' })
+        } else {
+          message.value = error.message
+          isError.value = true
+        }
+      } catch (err) {
+        message.value = 'Sorry, Something Went Wrong'
+        isError.value = true
+      }
+    }
+
+    return { email, password, handleSubmit, message, isError }
+  },
 }
 </script>
 
@@ -90,6 +137,20 @@ export default {
     }
   }
 
+  &__message {
+    width: 100%;
+    background: var.$red;
+    font-weight: 600;
+    border-radius: 8px;
+    color: var.$white;
+    padding: 0.8125rem;
+    margin-bottom: 1.25rem;
+
+    svg {
+      margin-right: 0.5rem;
+    }
+  }
+
   &__form {
     input {
       width: 100%;
@@ -97,8 +158,9 @@ export default {
       border-radius: 8px;
       border: 1px solid var.$lightGray;
       color: var.$lightText;
-      font-family: var.$fontNotoSans;
+      font-family: var.$font;
       font-weight: 400;
+      font-size: 1rem;
 
       &:active,
       &:focus {
@@ -130,29 +192,6 @@ export default {
       font-size: 0.875rem;
       color: var.$lightText;
       margin: 1.5625rem 0;
-    }
-
-    .socials {
-      button {
-        width: 42px;
-        height: 42px;
-        border-radius: 50px;
-        font-size: 1.125rem;
-        color: var.$lightText;
-        border: 2px solid var.$lightText;
-        background: var.$white;
-        cursor: pointer;
-        transition: all 100ms ease-in-out;
-
-        &:hover {
-          color: var.$darkText;
-          border: 2px solid var.$darkText;
-        }
-
-        &:not(:last-child) {
-          margin-right: 20px;
-        }
-      }
     }
 
     p:last-child {
