@@ -43,6 +43,16 @@ const routes = [
       title: "Authentication App | Signup",
     },
   },
+  {
+    path: "/login",
+    name: "Login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+    beforeEnter: requireNoAuth,
+    meta: {
+      title: "Authentication App | Login",
+    },
+  },
 ];
 
 const router = createRouter({

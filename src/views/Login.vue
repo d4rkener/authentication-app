@@ -1,28 +1,18 @@
 <template>
-  <div class="signup">
-    <div class="signup__container">
+  <div class="login">
+    <div class="login__container">
       <img
         src="../assets/images/devchallenges.svg"
-        class="signup__logo"
+        class="login__logo"
         alt="logo"
       />
-      <div class="signup__text">
-        <h3>
-          Join thousands of learners from<br class="hide-mobile" />
-          around the world
-        </h3>
-        <p>
-          Master web development by making real-life<br class="hide-mobile" />
-          projects. There are multiple paths for you to<br
-            class="hide-mobile"
-          />
-          choose
-        </p>
+      <div class="login__text">
+        <h3>Login to Dev Challenges</h3>
       </div>
-      <div class="signup__message" v-if="isError">
+      <div class="login__message" v-if="isError">
         <fa :icon="['fas', 'exclamation-circle']" /> {{ message }}
       </div>
-      <form class="signup__form" @submit.prevent="handleSubmit">
+      <form class="login__form" @submit.prevent="handleSubmit">
         <div class="email">
           <fa :icon="['fas', 'envelope']" />
           <input
@@ -43,12 +33,12 @@
         </div>
         <button type="submit" class="btn-primary">Start Coding Now</button>
       </form>
-      <div class="signup__others">
+      <div class="login__others">
         <p>or continue with these social profile</p>
         <Socials />
         <p>
-          Adready a member?
-          <router-link :to="{ name: 'Login' }">Login</router-link>
+          Don't have an account yet?
+          <router-link :to="{ name: 'Signup' }">Register</router-link>
         </p>
       </div>
     </div>
@@ -56,13 +46,13 @@
 </template>
 
 <script>
+import Socials from '@/components/Socials'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { supabase } from '@/supabase/config.js'
-import Socials from '@/components/Socials'
 
 export default {
-  name: 'Signup',
+  name: 'Login',
   components: { Socials },
   setup() {
     const email = ref('')
@@ -71,10 +61,10 @@ export default {
     const message = ref('')
     const router = useRouter()
 
-    // Signing up users with email
+    // Loging in users with email
     const handleSubmit = async () => {
       try {
-        const { user, error } = await supabase.auth.signUp({
+        const { user, error } = await supabase.auth.signIn({
           email: email.value.trim(),
           password: password.value.trim(),
         })
@@ -95,7 +85,7 @@ export default {
       }
     }
 
-    return { email, password, handleSubmit, message, isError }
+    return { email, password, isError, message, handleSubmit }
   },
 }
 </script>
@@ -104,7 +94,7 @@ export default {
 @use '@/assets/scss/_breakpoints.scss' as md;
 @use '@/assets/scss/_variables.scss' as var;
 
-.signup {
+.login {
   @include md.breakpoint(medium) {
     height: 100vh;
     display: flex;
@@ -132,11 +122,6 @@ export default {
     h3 {
       font-size: 1.125rem;
       font-weight: 600;
-    }
-
-    p {
-      margin-top: 0.875rem;
-      font-size: 1rem;
     }
   }
 
