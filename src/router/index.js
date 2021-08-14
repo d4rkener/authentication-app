@@ -26,12 +26,6 @@ const requireNoAuth = (to, from, next) => {
 const createProfileAuth = (to, from, next) => {
   const user = supabase.auth.user();
 
-  if (!user) {
-    next({ name: "Signup" });
-  } else {
-    next();
-  }
-
   const checkProfile = async () => {
     const { data } = await supabase
       .from("users")
