@@ -84,7 +84,7 @@ export default {
           message.value = ''
           email.value = ''
           password.value = ''
-          router.push({ name: 'Home' })
+          router.push({ name: 'CreateProfile' })
         } else {
           message.value = error.message
           isError.value = true

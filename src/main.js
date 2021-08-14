@@ -8,6 +8,7 @@ import {
   faEnvelope,
   faLock,
   faExclamationCircle,
+  faCamera,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faGoogle,
@@ -25,7 +26,8 @@ library.add(
   faFacebook,
   faTwitter,
   faGithub,
-  faExclamationCircle
+  faExclamationCircle,
+  faCamera
 );
 
 createApp(App)

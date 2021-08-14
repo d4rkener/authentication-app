@@ -23,6 +23,31 @@ const requireNoAuth = (to, from, next) => {
   }
 };
 
+const createProfileAuth = (to, from, next) => {
+  const user = supabase.auth.user();
+
+  if (!user) {
+    next({ name: "Signup" });
+  } else {
+    next();
+  }
+
+  const checkProfile = async () => {
+    const { data } = await supabase
+      .from("users")
+      .select("name")
+      .filter("id", "eq", user.id);
+
+    if (data.length) {
+      next({ name: "Home" });
+    } else {
+      next();
+    }
+  };
+
+  checkProfile();
+};
+
 const routes = [
   {
     path: "/",
@@ -51,6 +76,18 @@ const routes = [
     beforeEnter: requireNoAuth,
     meta: {
       title: "Authentication App | Login",
+    },
+  },
+  {
+    path: "/create",
+    name: "CreateProfile",
+    component: () =>
+      import(
+        /* webpackChunkName: "createProfile" */ "../views/CreateProfile.vue"
+      ),
+    beforeEnter: createProfileAuth,
+    meta: {
+      title: "Authentication App | Create Profile",
     },
   },
 ];
