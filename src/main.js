@@ -9,6 +9,9 @@ import {
   faLock,
   faExclamationCircle,
   faCamera,
+  faChevronUp,
+  faChevronDown,
+  faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faGoogle,
@@ -27,7 +30,10 @@ library.add(
   faTwitter,
   faGithub,
   faExclamationCircle,
-  faCamera
+  faCamera,
+  faChevronDown,
+  faChevronUp,
+  faSignOutAlt
 );
 
 createApp(App)
