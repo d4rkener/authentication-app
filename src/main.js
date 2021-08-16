@@ -12,6 +12,7 @@ import {
   faChevronUp,
   faChevronDown,
   faSignOutAlt,
+  faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faGoogle,
@@ -33,7 +34,8 @@ library.add(
   faCamera,
   faChevronDown,
   faChevronUp,
-  faSignOutAlt
+  faSignOutAlt,
+  faChevronLeft
 );
 
 createApp(App)

@@ -101,6 +101,18 @@ const routes = [
       title: "Authentication App | Create Profile",
     },
   },
+  {
+    path: "/edit",
+    name: "EditProfile",
+    component: () =>
+      import(
+        /* webpackChunkName: "editProfile" */ "../views/EditProfile.vue"
+      ),
+    beforeEnter: requireAuth,
+    meta: {
+      title: "Authentication App | Edit Profile",
+    },
+  },
 ];
 
 const router = createRouter({

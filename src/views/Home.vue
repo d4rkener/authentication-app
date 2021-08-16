@@ -1,5 +1,5 @@
 <template>
-  <Navbar :name="name" />
+  <Navbar />
   <div class="home">
     <div class="home__header-text">
       <h1>Personal info</h1>
@@ -11,7 +11,7 @@
           <h2>Profile</h2>
           <p>Some info may be visible to other people</p>
         </div>
-        <router-link to="#">Edit</router-link>
+        <router-link :to="{ name: 'EditProfile' }">Edit</router-link>
       </div>
       <div class="information">
         <div class="name">
@@ -37,33 +37,13 @@
 
 <script>
 import Navbar from '@/components/Navbar'
-import { onMounted, ref } from 'vue'
-import { supabase } from '@/supabase/config.js'
+import getInfo from '@/composables/getInfo.js'
 
 export default {
   name: 'Home',
   components: { Navbar },
   setup() {
-    const name = ref('')
-    const bio = ref('')
-    const email = ref('')
-    const phone = ref(0)
-
-    onMounted(async () => {
-      const user = supabase.auth.user()
-
-      const { data } = await supabase
-        .from('users')
-        .select('*')
-        .filter('id', 'eq', user.id)
-
-      if (data.length > 0) {
-        name.value = data[0].name
-        bio.value = data[0].bio
-        email.value = data[0].email
-        phone.value = data[0].phone
-      }
-    })
+    const { name, bio, email, phone } = getInfo()
 
     return { name, bio, email, phone }
   },
@@ -140,6 +120,12 @@ export default {
         border-radius: 12px;
         border: 1px solid var.$lightText;
         font-weight: 500;
+        transition: all 100ms ease-in-out;
+
+        &:hover {
+          background: var.$darkText;
+          color: var.$white;
+        }
       }
     }
 

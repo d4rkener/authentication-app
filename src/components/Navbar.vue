@@ -23,13 +23,15 @@
 import { ref } from 'vue'
 import { supabase } from '@/supabase/config.js'
 import { useRouter } from 'vue-router'
+import getInfo from '@/composables/getInfo.js'
 
 export default {
   name: 'Navbar',
-  props: ['name'],
   setup() {
     const isOpen = ref(false)
     const router = useRouter()
+
+    const { name } = getInfo()
 
     const toggleDropbox = () => {
       isOpen.value = !isOpen.value
@@ -43,7 +45,7 @@ export default {
       }
     }
 
-    return { toggleDropbox, isOpen, logoutUsers }
+    return { toggleDropbox, isOpen, logoutUsers, name }
   },
 }
 </script>
